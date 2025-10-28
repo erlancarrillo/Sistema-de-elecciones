@@ -1,0 +1,282 @@
+{% extends 'votacion/base.html' %}
+
+{% block title %}Papeleta de Votación{% endblock %}
+
+{% block extra_css %}
+<style>
+    .papeleta-container {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        border: 3px solid #333;
+    }
+    
+    .papeleta-header {
+        text-align: center;
+        border-bottom: 3px solid #333;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .papeleta-header h2 {
+        color: #333;
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    
+    .papeleta-header p {
+        color: #666;
+        font-size: 1.1em;
+    }
+    
+    .instrucciones {
+        background: #fffbea;
+        border: 2px solid #ffd700;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 30px;
+    }
+    
+    .instrucciones h3 {
+        color: #856404;
+        margin-bottom: 10px;
+    }
+    
+    .instrucciones ul {
+        margin-left: 20px;
+        color: #666;
+    }
+    
+    .candidatos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .candidato-card {
+        border: 3px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: white;
+        position: relative;
+    }
+    
+    .candidato-card:hover {
+        border-color: #667eea;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        transform: translateY(-5px);
+    }
+    
+    .candidato-card input[type="radio"] {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+    }
+    
+    .candidato-card.selected {
+        border-color: #4CAF50;
+        background: #f1f8f4;
+        box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+    }
+    
+    .candidato-numero {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: #333;
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    
+    .candidato-foto {
+        width: 150px;
+        height: 150px;
+        margin: 60px auto 20px auto;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+    }
+    
+    .candidato-foto img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .candidato-foto-placeholder {
+        font-size: 60px;
+    }
+    
+    .candidato-info {
+        text-align: center;
+    }
+    
+    .candidato-nombre {
+        font-size: 1.3em;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .candidato-partido {
+        color: #666;
+        font-size: 1.1em;
+        margin-bottom: 15px;
+        font-style: italic;
+    }
+    
+    .candidato-propuesta {
+        text-align: left;
+        color: #555;
+        font-size: 0.9em;
+        line-height: 1.5;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 5px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .votar-button-container {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 3px solid #333;
+    }
+    
+    .btn-votar {
+        background: #4CAF50;
+        color: white;
+        padding: 20px 60px;
+        font-size: 1.3em;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+    
+    .btn-votar:hover {
+        background: #45a049;
+        transform: scale(1.05);
+    }
+    
+    .btn-votar:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .ciudadano-info {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        border-left: 4px solid #2196F3;
+    }
+    
+    .ciudadano-info strong {
+        color: #1976D2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="papeleta-container">
+    <div class="papeleta-header">
+        <h2>📋 PAPELETA DE VOTACIÓN OFICIAL</h2>
+        <p>Elecciones Generales 2025</p>
+    </div>
+    
+    <div class="ciudadano-info">
+        <strong>Votante:</strong> {{ ciudadano.nombre_completo }} | 
+        <strong>Cédula:</strong> {{ ciudadano.cedula }}
+    </div>
+    
+    <div class="instrucciones">
+        <h3>⚠️ INSTRUCCIONES:</h3>
+        <ul>
+            <li>Seleccione UN solo candidato marcando el círculo correspondiente</li>
+            <li>Lea cuidadosamente las propuestas de cada candidato</li>
+            <li>Una vez emitido el voto, NO podrá cambiarlo</li>
+            <li>Presione el botón "EMITIR VOTO" para confirmar su decisión</li>
+        </ul>
+    </div>
+    
+    <form method="post" id="votacionForm">
+        {% csrf_token %}
+        <div class="candidatos-grid">
+            {% for candidato in candidatos %}
+            <div class="candidato-card" onclick="selectCandidato(this, {{ candidato.id }})">
+                <div class="candidato-numero">{{ candidato.numero }}</div>
+                <input type="radio" name="candidato_id" value="{{ candidato.id }}" id="candidato_{{ candidato.id }}" required>
+                
+                <div class="candidato-foto">
+                    {% if candidato.foto %}
+                        <img src="{{ candidato.foto.url }}" alt="{{ candidato.nombre_completo }}">
+                    {% else %}
+                        <span class="candidato-foto-placeholder">👤</span>
+                    {% endif %}
+                </div>
+                
+                <div class="candidato-info">
+                    <div class="candidato-nombre">{{ candidato.nombre_completo }}</div>
+                    <div class="candidato-partido">{{ candidato.partido_politico }}</div>
+                    <div class="candidato-propuesta">
+                        <strong>Propuesta:</strong><br>
+                        {{ candidato.propuesta|truncatewords:30 }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="votar-button-container">
+            <button type="submit" class="btn-votar" id="btnVotar" disabled>
+                🗳️ EMITIR VOTO
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function selectCandidato(card, candidatoId) {
+        // Remover selección previa
+        document.querySelectorAll('.candidato-card').forEach(c => {
+            c.classList.remove('selected');
+        });
+        
+        // Agregar selección actual
+        card.classList.add('selected');
+        
+        // Marcar el radio button
+        document.getElementById('candidato_' + candidatoId).checked = true;
+        
+        // Habilitar botón de votar
+        document.getElementById('btnVotar').disabled = false;
+    }
+    
+    // Confirmación antes de enviar
+    document.getElementById('votacionForm').addEventListener('submit', function(e) {
+        if (!confirm('¿Está seguro de emitir su voto? Esta acción NO se puede deshacer.')) {
+            e.preventDefault();
+        }
+    });
+</script>
+{% endblock %}

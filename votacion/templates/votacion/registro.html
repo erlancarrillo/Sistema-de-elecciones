@@ -1,0 +1,154 @@
+{% extends 'votacion/base.html' %}
+
+{% block title %}Registro de Ciudadano{% endblock %}
+
+{% block extra_css %}
+<style>
+    .registro-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    .registro-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: bold;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    
+    .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+    
+    .error {
+        color: #f44336;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    
+    .btn-full {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .login-link {
+        text-align: center;
+        margin-top: 20px;
+        color: #666;
+    }
+    
+    .login-link a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <h2>Registro de Ciudadano</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.cedula.id_for_label }}">Cédula:</label>
+            {{ form.cedula }}
+            {% if form.cedula.errors %}
+                <div class="error">{{ form.cedula.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.nombre_completo.id_for_label }}">Nombre Completo:</label>
+            {{ form.nombre_completo }}
+            {% if form.nombre_completo.errors %}
+                <div class="error">{{ form.nombre_completo.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.fecha_nacimiento.id_for_label }}">Fecha de Nacimiento:</label>
+            {{ form.fecha_nacimiento }}
+            {% if form.fecha_nacimiento.errors %}
+                <div class="error">{{ form.fecha_nacimiento.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.direccion.id_for_label }}">Dirección:</label>
+            {{ form.direccion }}
+            {% if form.direccion.errors %}
+                <div class="error">{{ form.direccion.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Usuario:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email:</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="error">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">Contraseña:</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="error">{{ form.password1.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">Confirmar Contraseña:</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="error">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-full">Registrarse</button>
+    </form>
+    <div class="login-link">
+        ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>
+    </div>
+</div>
+{% endblock %}
