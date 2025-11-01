@@ -4,129 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Sistema de Votación Electoral{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .gradient-bg {
+            background: linear-gradient(135deg, #131625 0%, #193c7e 100%);
         }
         
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .btn-hover-effect {
+            transition: all 0.3s ease;
         }
         
-        .messages {
-            margin-bottom: 20px;
-        }
-        
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-        
-        .nav-buttons {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
-            margin: 5px;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #45a049;
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            background: #f44336;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: #da190b;
+        .btn-hover-effect:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>SISTEMA DE VOTACIÓN ELECTORAL</h1>
-            <p>Ejerciendo tu derecho al voto democrático</p>
-        </div>
-        
+<body class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <div class="glass-effect rounded-2xl p-6 md:p-8 max-w-4xl mx-auto shadow-xl">
+                <div class="flex flex-col md:flex-row items-center justify-center mb-4">
+                    <i class="fas fa-vote-yea text-white text-4xl md:text-5xl mb-4 md:mb-0 md:mr-4"></i>
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">SISTEMA DE VOTACIÓN ELECTORAL</h1>
+                </div>
+                <p class="text-white text-lg md:text-xl opacity-90">Ejerciendo tu derecho al voto democrático</p>
+            </div>
+        </header>
+
+        <!-- Navigation -->
         {% if user.is_authenticated %}
-        <div class="nav-buttons">
-            <a href="{% url 'votar' %}" class="btn btn-primary">Votar</a>
-            <a href="{% url 'resultados' %}" class="btn btn-primary">Ver Resultados</a>
-            <a href="{% url 'logout' %}" class="btn btn-secondary">Cerrar Sesión</a>
+        <div class="flex justify-center mb-8">
+            <div class="glass-effect rounded-2xl p-4 md:p-6 shadow-xl">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{% url 'votar' %}" class="btn-hover-effect bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Votar</span>
+                    </a>
+                    <a href="{% url 'resultados' %}" class="btn-hover-effect bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-2">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Ver Resultados</span>
+                    </a>
+                    <a href="{% url 'logout' %}" class="btn-hover-effect bg-rose-500 hover:bg-rose-600 text-white font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </div>
+            </div>
         </div>
         {% endif %}
-        
+
+        <!-- Messages -->
         {% if messages %}
-        <div class="messages">
+        <div class="max-w-4xl mx-auto mb-8">
             {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
+            <div class="mb-4 rounded-xl p-4 shadow-lg transition-all duration-300 transform hover:scale-[1.01]
+                {% if message.tags == 'success' %} bg-emerald-100 border-l-4 border-emerald-500 text-emerald-700
+                {% elif message.tags == 'error' %} bg-rose-100 border-l-4 border-rose-500 text-rose-700
+                {% elif message.tags == 'warning' %} bg-amber-100 border-l-4 border-amber-500 text-amber-700
+                {% else %} bg-blue-100 border-l-4 border-blue-500 text-blue-700 {% endif %}">
+                <div class="flex items-start">
+                    <i class="fas 
+                        {% if message.tags == 'success' %} fa-check-circle 
+                        {% elif message.tags == 'error' %} fa-exclamation-circle 
+                        {% elif message.tags == 'warning' %} fa-exclamation-triangle 
+                        {% else %} fa-info-circle {% endif %} 
+                        mt-1 mr-3"></i>
+                    <div>
+                        <p class="font-medium">{{ message }}</p>
+                    </div>
+                </div>
             </div>
             {% endfor %}
         </div>
         {% endif %}
-        
-        {% block content %}{% endblock %}
+
+        <!-- Content -->
+        <main class="max-w-6xl mx-auto">
+            {% block content %}{% endblock %}
+        </main>
     </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 py-6 text-center text-white opacity-80">
+        <div class="container mx-auto px-4">
+            <p class="text-sm md:text-base">Sistema de Votación Electoral &copy; {% now "Y" %}</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
