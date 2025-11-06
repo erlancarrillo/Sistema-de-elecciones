@@ -136,3 +136,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # Security settings para desarrollo
 SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = None
+
+# Al final del archivo
+CSRF_COOKIE_DOMAIN = None
+CSRF_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = None

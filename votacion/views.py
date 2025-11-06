@@ -8,6 +8,12 @@ from django.views.decorators.http import require_http_methods
 from .models import Ciudadano, Candidato, Voto
 from .forms import RegistroForm
 
+from django.http import HttpResponse
+from .utils import generar_reporte_resultados, generar_reporte_auditoria
+from django.contrib.admin.views.decorators import staff_member_required
+from datetime import datetime
+
+
 @ensure_csrf_cookie
 @require_http_methods(["GET", "POST"])
 def registro_view(request):
@@ -103,3 +109,41 @@ def resultados_view(request):
         'total_votos': total_votos,
         'ha_votado': ciudadano.ha_votado
     })
+
+@login_required
+def descargar_reporte_resultados(request):
+    """
+    Genera y descarga el reporte de resultados en PDF
+    """
+    candidatos = Candidato.objects.all().order_by('-votos', 'numero')
+    total_votos = sum(c.votos for c in candidatos)
+    
+    # Generar PDF
+    buffer = generar_reporte_resultados(candidatos, total_votos)
+    
+    # Preparar respuesta
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Resultados_Electorales_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf"'
+    response.write(buffer.getvalue())
+    
+    return response
+
+@staff_member_required  # Solo administradores
+def descargar_reporte_auditoria(request):
+    """
+    Genera y descarga el reporte de auditoría detallado en PDF
+    Solo accesible para administradores
+    """
+    votos = Voto.objects.all().select_related('ciudadano', 'candidato').order_by('fecha_hora')
+    ciudadanos_votaron = Ciudadano.objects.filter(ha_votado=True).count()
+    total_ciudadanos = Ciudadano.objects.count()
+    
+    # Generar PDF
+    buffer = generar_reporte_auditoria(votos, ciudadanos_votaron, total_ciudadanos)
+    
+    # Preparar respuesta
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="Auditoria_Electoral_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf"'
+    response.write(buffer.getvalue())
+    
+    return response

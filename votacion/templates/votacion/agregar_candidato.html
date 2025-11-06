@@ -1,0 +1,158 @@
+{% extends 'votacion/base.html' %}
+
+{% block title %}Agregar Candidato{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    .form-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #9c27b0;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: bold;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #9c27b0;
+    }
+    
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    
+    .btn-cancel {
+        background: #757575;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-cancel:hover {
+        background: #616161;
+    }
+    
+    .error {
+        color: #f44336;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    
+    .help-text {
+        color: #666;
+        font-size: 12px;
+        margin-top: 5px;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>➕ Agregar Nuevo Candidato</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.numero.id_for_label }}">Número de Candidato:</label>
+            {{ form.numero }}
+            <div class="help-text">Número único que identificará al candidato en la papeleta</div>
+            {% if form.numero.errors %}
+                {% for error in form.numero.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.nombre_completo.id_for_label }}">Nombre Completo:</label>
+            {{ form.nombre_completo }}
+            {% if form.nombre_completo.errors %}
+                {% for error in form.nombre_completo.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.partido_politico.id_for_label }}">Partido Político:</label>
+            {{ form.partido_politico }}
+            {% if form.partido_politico.errors %}
+                {% for error in form.partido_politico.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.propuesta.id_for_label }}">Propuesta Electoral:</label>
+            {{ form.propuesta }}
+            <div class="help-text">Describe las propuestas principales del candidato</div>
+            {% if form.propuesta.errors %}
+                {% for error in form.propuesta.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.foto.id_for_label }}">Foto del Candidato:</label>
+            {{ form.foto }}
+            <div class="help-text">Opcional. Formatos: JPG, PNG. Tamaño recomendado: 500x500px</div>
+            {% if form.foto.errors %}
+                {% for error in form.foto.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="form-actions">
+            <a href="{% url 'gestionar_candidatos' %}" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn btn-primary">💾 Guardar Candidato</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
