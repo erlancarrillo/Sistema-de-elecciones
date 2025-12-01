@@ -3,15 +3,6 @@
 import os
 import sys
 
-path = '/home/Erlan/sistemavotos' 
-if path not in sys.path:
-    sys.path.append(path)
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'sistema_votacion.settings'
-
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
-
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sistema_votacion.settings")
