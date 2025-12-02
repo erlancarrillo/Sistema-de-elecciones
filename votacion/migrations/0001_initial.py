@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ("partido_politico", models.CharField(max_length=100)),
                 (
                     "foto",
-                    models.ImageField(blank=True, null=True, upload_to="candidatos/"),
+                    foto = models.CharField(max_length=10000),
                 ),
                 ("propuesta", models.TextField()),
                 ("numero", models.IntegerField(unique=True)),
