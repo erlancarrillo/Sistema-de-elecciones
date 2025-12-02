@@ -97,8 +97,8 @@
 {% block content %}
 <div class="gestion-container">
     <div class="gestion-header">
-        <h2>👨‍💼 Gestión de Candidatos</h2>
-        <a href="{% url 'agregar_candidato' %}" class="btn btn-primary">➕ Agregar Candidato</a>
+        <h2>Gestión de Candidatos</h2>
+        <a href="{% url 'agregar_candidato' %}" class="btn btn-primary">Agregar Candidato</a>
     </div>
     
     {% if candidatos %}
@@ -119,9 +119,9 @@
                 <td><strong>{{ candidato.numero }}</strong></td>
                 <td>
                     {% if candidato.foto %}
-                        <img src="{{ candidato.foto.url }}" alt="{{ candidato.nombre_completo }}" class="candidato-foto-small">
+                        <img src="{{ candidato.foto }}" alt="{{ candidato.nombre_completo }}" class="candidato-foto-small">
                     {% else %}
-                        👤
+                        <i class="fas fa-user" style="font-size: 32px; color: #888;"></i>
                     {% endif %}
                 </td>
                 <td>{{ candidato.nombre_completo }}</td>

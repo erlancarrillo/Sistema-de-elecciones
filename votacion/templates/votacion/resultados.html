@@ -77,13 +77,16 @@
                     <!-- Foto del candidato -->
                     <div class="w-16 h-16 rounded-full border-2 border-white/30 overflow-hidden bg-white/10">
                         {% if candidato.foto %}
-                            <img src="{{ candidato.foto.url }}" alt="{{ candidato.nombre_completo }}" class="w-full h-full object-cover">
+                            <img src="{{ candidato.foto }}" 
+                                alt="{{ candidato.nombre_completo }}" 
+                                class="w-full h-full object-cover">
                         {% else %}
                             <div class="w-full h-full flex items-center justify-center text-white/60">
                                 <i class="fas fa-user text-2xl"></i>
                             </div>
                         {% endif %}
                     </div>
+
                 </div>
 
                 <!-- Votos totales -->
