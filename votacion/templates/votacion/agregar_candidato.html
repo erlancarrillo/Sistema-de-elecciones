@@ -137,17 +137,18 @@
                 {% endfor %}
             {% endif %}
         </div>
-        
         <div class="form-group">
-            <label for="{{ form.foto.id_for_label }}">Foto del Candidato:</label>
+            <label for="{{ form.foto.id_for_label }}">Enlace de la foto del candidato:</label>
             {{ form.foto }}
-            <div class="help-text">Opcional. Formatos: JPG, PNG. Tamaño recomendado: 500x500px</div>
+            <div class="help-text">Opcional. Formato: URL válida (https://...)</div>
+
             {% if form.foto.errors %}
                 {% for error in form.foto.errors %}
                     <div class="error">{{ error }}</div>
                 {% endfor %}
             {% endif %}
         </div>
+
         
         <div class="form-actions">
             <a href="{% url 'gestionar_candidatos' %}" class="btn-cancel">Cancelar</a>

@@ -20,7 +20,7 @@ class Ciudadano(models.Model):
 class Candidato(models.Model):
     nombre_completo = models.CharField(max_length=200)
     partido_politico = models.CharField(max_length=100)
-    foto = models.CharField(max_length=10000)  # cambiando por url del candidato
+    foto = models.URLField(max_length=500, null=True, blank=True  # cambiando por url del candidato
     propuesta = models.TextField()
     numero = models.IntegerField(unique=True)
     votos = models.IntegerField(default=0)

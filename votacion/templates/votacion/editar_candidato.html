@@ -160,23 +160,29 @@
                 {% endfor %}
             {% endif %}
         </div>
-        
+
         <div class="form-group">
-            <label for="{{ form.foto.id_for_label }}">Foto del Candidato:</label>
+            <label for="{{ form.foto.id_for_label }}">Enlace de la foto del candidato:</label>
+
             {% if candidato.foto %}
             <div class="foto-actual">
                 <p><strong>Foto actual:</strong></p>
-                <img src="{{ candidato.foto.url }}" alt="{{ candidato.nombre_completo }}">
-                <p style="margin-top: 10px; color: #666; font-size: 14px;">Sube una nueva imagen para reemplazar la actual</p>
+                <img src="{{ candidato.foto }}" alt="{{ candidato.nombre_completo }}">
+                <p style="margin-top: 10px; color: #666; font-size: 14px;">
+                    Ingresa un nuevo enlace para reemplazar la foto actual
+                </p>
             </div>
             {% endif %}
+
             {{ form.foto }}
+
             {% if form.foto.errors %}
                 {% for error in form.foto.errors %}
                     <div class="error">{{ error }}</div>
                 {% endfor %}
             {% endif %}
         </div>
+
         
         <div class="form-actions">
             <a href="{% url 'gestionar_candidatos' %}" class="btn-cancel">Cancelar</a>

@@ -87,20 +87,24 @@
 {% endblock %}
 
 {% block content %}
-<div class="confirm-container">
-    <h2>⚠️ Confirmar Eliminación</h2>
-    
-    <div class="candidato-info">
+    <div class="confirm-container">
+        <h2>⚠️ Confirmar Eliminación</h2>
+        
+        <div class="candidato-info">
         {% if candidato.foto %}
-            <img src="{{ candidato.foto.url }}" alt="{{ candidato.nombre_completo }}">
+            <img src="{{ candidato.foto }}" alt="{{ candidato.nombre_completo }}">
         {% else %}
-            <div style="font-size: 60px;">👤</div>
+            <div style="font-size: 60px; opacity: 0.5;">
+                <i class="fas fa-user"></i>
+            </div>
         {% endif %}
+
         <p><strong>Candidato #{{ candidato.numero }}</strong></p>
         <p style="font-size: 1.2em; font-weight: bold;">{{ candidato.nombre_completo }}</p>
         <p>{{ candidato.partido_politico }}</p>
         <p><strong>Votos actuales: {{ candidato.votos }}</strong></p>
     </div>
+
     
     <div class="warning">
         <strong>⚠️ ADVERTENCIA:</strong><br>
